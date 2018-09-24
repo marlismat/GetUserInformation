@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+    <!-- Datasource para el config manager que usa base de datos -->
+    <!-- Configuracion para pruebas. Quitar al ir a produccion/QA -->
+    <!--bean id="configTestingDataSource"
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+        lazy-init="true">
+        <property name="url" value="jdbc:oracle:thin:@10.27.31.67:1527:PORTAL9i"/>
+        <property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
+        <property name="username" value="ASW_CONFIG"/>
+        <property name="password" value="digitel412"/>
+    </bean-->
+    <!-- Configuracion para produccion -->
+    <bean id="configJNDIDataSource"
+        class="org.springframework.jndi.JndiObjectFactoryBean"
+        lazy-init="true">
+        <property name="resourceRef" value="true" />
+        <property name="jndiName" value="jdbc/configuration"/>
+    </bean>
+    
+    <!-- Bean que maneja la configuracion de clientes de webservices -->
+    <bean id="WSClientPropertyBean"
+        class="la.integra.configuration.DBConfigManager"
+        init-method="load"
+        scope="singleton">
+        <!-- En el constructor va el nombre del grupo de datos
+             que utilizara este configmanager, es decir, el valor
+             que tendran los queries para la columna CONFIG_NAME -->
+        <constructor-arg index="0" value="ASW-WSCLIENTS"/>
+        <property name="dataSource" ref="configJNDIDataSource"/>
+    </bean>
+
+    <!--  Bean de configuracion de valores de implementaciones de servicios-->
+    <bean id="WSServerPropertyBean"
+        class="la.integra.configuration.DBConfigManager"
+        init-method="load"
+        scope="singleton">
+        <constructor-arg index="0" value="ASW-WS"/>
+        <property name="dataSource" ref="configJNDIDataSource"/>
+    </bean>
+    	<bean id="QueuePropertyBean"
+		class="la.integra.configuration.DBConfigManager"
+		init-method="load"
+		scope="singleton">
+        <!-- En el constructor va el nombre del grupo de datos
+             que utilizara este configmanager, es decir, el valor
+             que tendran los queries para la columna CONFIG_NAME -->
+		<constructor-arg index="0" value="ASW-MDB"/>
+        <property name="dataSource" ref="configJNDIDataSource"/>
+	</bean>
+            <!-- Bean que maneja la configuracion de las interacciones -->
+    <bean id="InteractionsConfigManagerBean" class="la.integra.configuration.DBConfigManager"
+        scope="singleton"
+        init-method="load">
+        <!-- En el constructor va el nombre del grupo de datos
+             que utilizara este configmanager, es decir, el valor
+             que tendran los queries para la columna CONFIG_NAME -->
+        <constructor-arg index="0" value="ASW-INTERACTIONS"/>
+        <property name="dataSource" ref="configJNDIDataSource"/>
+    </bean>
+           <!--  Bean de configuracion de transacciones -->
+    <bean id="TransactionsConfigManagerBean"
+        class="la.integra.configuration.DBConfigManager"
+        init-method="load"
+        scope="singleton">
+        <constructor-arg index="0" value="ASW-TRANSACTIONS"/>
+        <property name="dataSource" ref="configJNDIDataSource"/>
+    </bean>
+
+</beans>

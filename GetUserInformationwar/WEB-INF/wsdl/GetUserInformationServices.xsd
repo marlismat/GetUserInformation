@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://getuserinformationservice.digitel.com.ve/" xmlns:tns="http://getuserinformationservice.digitel.com.ve/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="execute" type="tns:execute"/>
+
+  <xs:element name="executeResponse" type="tns:executeResponse"/>
+
+  <xs:complexType name="execute">
+    <xs:sequence>
+      <xs:element name="GetUserInformationServiceRequest" type="tns:getUserInformationServiceRequest"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getUserInformationServiceRequest">
+    <xs:sequence>
+      <xs:element name="customerOrder" type="tns:customerOrder"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="customerOrder">
+    <xs:sequence>
+      <xs:element name="id" type="xs:string"/>
+      <xs:element name="purchaseOrderNumber" type="xs:string" minOccurs="0"/>
+      <xs:element name="customerOrderType" type="xs:string" minOccurs="0"/>
+      <xs:element name="interactionDate" type="xs:string" minOccurs="0"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+      <xs:element name="customerOrderItem" type="tns:customerOrderItem" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="partyInteractionRole" type="tns:partyInteractionRole" maxOccurs="unbounded"/>
+      <xs:element name="customerAccountInteractionRole" type="tns:customerAccountInteractionRole" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="functionalMessage" type="tns:functionalMessage" minOccurs="0"/>
+      <xs:element name="errorMessage" type="tns:errorMessage" minOccurs="0"/>
+      <xs:element name="resourceInteractionRole" type="tns:resourceInteractionRole"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="customerOrderItem">
+    <xs:sequence>
+      <xs:element name="id" type="xs:string" minOccurs="0"/>
+      <xs:element name="action" type="xs:string" minOccurs="0"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+      <xs:element name="customerProduct" type="tns:customerProduct"/>
+      <xs:element name="functionalMessage" type="tns:functionalMessage" minOccurs="0"/>
+      <xs:element name="errorMessage" type="tns:errorMessage" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="customerProduct">
+    <xs:sequence>
+      <xs:element name="id" type="xs:string"/>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="productType" type="xs:string"/>
+      <xs:element name="productPartNumber" type="xs:string"/>
+      <xs:element name="startDate" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="endDate" type="xs:dateTime" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="functionalMessage">
+    <xs:sequence>
+      <xs:element name="code" type="xs:string"/>
+      <xs:element name="message" type="xs:string"/>
+      <xs:element name="causeCode" type="xs:string" minOccurs="0"/>
+      <xs:element name="causeMessage" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="errorMessage">
+    <xs:sequence>
+      <xs:element name="code" type="xs:string"/>
+      <xs:element name="message" type="xs:string"/>
+      <xs:element name="trace" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="partyInteractionRole">
+    <xs:sequence>
+      <xs:element name="partyRole" type="tns:partyRole"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="partyRole">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="party" type="tns:party"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="party">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="partyId" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="customerAccountInteractionRole">
+    <xs:sequence>
+      <xs:element name="interactionRole" type="xs:string" minOccurs="0"/>
+      <xs:element name="customerAccount" type="tns:customerAccount"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="customerAccount">
+    <xs:sequence>
+      <xs:element name="id" type="xs:string"/>
+      <xs:element name="accountType" type="xs:string" minOccurs="0"/>
+      <xs:element name="puk" type="xs:string" minOccurs="0"/>
+      <xs:element name="puk2" type="xs:string" minOccurs="0"/>
+      <xs:element name="pin" type="xs:string" minOccurs="0"/>
+      <xs:element name="pin2" type="xs:string" minOccurs="0"/>
+      <xs:element name="balance" type="xs:string" minOccurs="0"/>
+      <xs:element name="accountStatus" type="xs:string" minOccurs="0"/>
+      <xs:element name="customer" type="tns:customer" minOccurs="0"/>
+      <xs:element name="activateDate" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="iccid" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="customer">
+    <xs:sequence>
+      <xs:element name="VIPcode" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="resourceInteractionRole">
+    <xs:sequence>
+      <xs:element name="resourceRole" type="tns:resourceRole"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="resourceRole">
+    <xs:sequence>
+      <xs:element name="resource" type="tns:resource"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="resource">
+    <xs:sequence>
+      <xs:element name="value" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="executeResponse">
+    <xs:sequence>
+      <xs:element name="GetUserInformationServiceResponse" type="tns:getUserInformationServiceResponse"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getUserInformationServiceResponse">
+    <xs:sequence>
+      <xs:element name="customerOrder" type="tns:customerOrder"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

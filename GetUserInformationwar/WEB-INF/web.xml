@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" id="WebApp_ID">
+  <display-name>GetUserInformationWAR</display-name>
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value></param-value>
+  </context-param>
+  <context-param>
+    <param-name>locatorFactorySelector</param-name>
+    <param-value>classpath:/ve/com/digitel/getuserinformationservice/conf/beanRefContext.xml</param-value>
+  </context-param>
+  <context-param>
+    <param-name>parentContextKey</param-name>
+    <param-value>beanFactory</param-value>
+  </context-param>
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <servlet>
+    <servlet-name>GetUserInformationServicesServlethttp</servlet-name>
+    <servlet-class>ve.com.digitel.getuserinformationservice.GetUserInformationService</servlet-class>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetUserInformationServicesServlethttp</servlet-name>
+    <url-pattern>/GetUserInformationServices</url-pattern>
+  </servlet-mapping>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+</web-app>

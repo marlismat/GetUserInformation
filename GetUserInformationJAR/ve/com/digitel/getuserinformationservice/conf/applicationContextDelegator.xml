@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+    <bean id="sendMessageApproval" class="ve.com.digitel.getuserinformationservice.delegator.SendMessageApprovalActionBean" 
+    							init-method="init">
+        <constructor-arg type="java.lang.String" value="Send Message Approval" />
+    </bean>
+
+    <bean id="processFailures" class="ve.com.digitel.getuserinformationservice.delegator.ProcessFailuresActionBean" 
+    							init-method="init">
+        <constructor-arg type="java.lang.String" value="Process Failures" />
+    </bean>
+<bean id="validateState" class="ve.com.digitel.getuserinformationservice.delegator.ValidateState"
+							init-method="init"
+							p:errorHandler-ref="errorHandler"
+							p:positiveOutcomeStep-ref="sendMessageApproval"
+							p:negativeOutcomeStep-ref="processFailures">
+    						<constructor-arg type="java.lang.String" value="Validate State" />
+</bean>  
+<bean id="getUserConfig" class="ve.com.digitel.getuserinformationservice.delegator.GetUserInformationConfig"
+							init-method="init"
+							p:errorHandler-ref="errorHandler"
+							p:XStream-ref="xStream"
+							p:positiveOutcomeStep-ref="validateState"
+							p:negativeOutcomeStep-ref="processFailures">
+    						<constructor-arg type="java.lang.String" value="Get User Information Config" />
+</bean>
+<bean id="getPostpaidSecurityCode" class="ve.com.digitel.getuserinformationservice.delegator.GetCodePostpaid"
+							init-method="init"
+							p:nextStep-ref="getUserConfig"
+							p:errorHandler-ref="errorHandler">
+    						<constructor-arg type="java.lang.String" value="Get Code Security Postpaid" />
+</bean>
+<bean id="getWSPostpaid" class="ve.com.digitel.getuserinformationservice.delegator.GetUserWSPostpaidData"
+							init-method="init"
+							p:errorHandler-ref="errorHandler"
+							p:XStream-ref="xStream"
+							p:positiveOutcomeStep-ref="getPostpaidSecurityCode"
+							p:negativeOutcomeStep-ref="processFailures">
+    						<constructor-arg type="java.lang.String" value="Get Data Postpaid " />
+</bean>
+<bean id="getWSPrepaidData" class="ve.com.digitel.getuserinformationservice.delegator.GetUserWSPrepaidData"
+							init-method="init"
+							p:errorHandler-ref="errorHandler"
+							p:XStream-ref="xStream"
+							p:positiveOutcomeStep-ref="getUserConfig"
+							p:negativeOutcomeStep-ref="getWSPostpaid">
+    						<constructor-arg type="java.lang.String" value="Get Data Prepaid" />
+</bean>
+<bean id="getWSAuthorizationOthersUser" class="ve.com.digitel.getuserinformationservice.delegator.GetUserWsAuthorizationOtherUsers"
+							init-method="init"
+							p:errorHandler-ref="errorHandler"
+							p:positiveOutcomeStep-ref="sendMessageApproval"
+							p:negativeOutcomeStep-ref="processFailures">
+    						<constructor-arg type="java.lang.String" value="Get Others Users Data" />
+</bean>
+<bean id="getWSAuthorization" class="ve.com.digitel.getuserinformationservice.delegator.GetUserWsAuthorizationCORP"
+							init-method="init"
+							p:errorHandler-ref="errorHandler"
+							p:positiveOutcomeStep-ref="sendMessageApproval"
+							p:negativeOutcomeStep-ref="getWSAuthorizationOthersUser">
+    						<constructor-arg type="java.lang.String" value="Get Corp Users Data" />
+</bean>
+<bean id="validateLogin" class="ve.com.digitel.getuserinformationservice.delegator.ValidateLoginDelegator"
+							init-method="init"
+							p:positiveOutcomeStep-ref="getWSPrepaidData"
+							p:negativeOutcomeStep-ref="getWSAuthorization">
+    						<constructor-arg type="java.lang.String" value="Validating Login if numeric" />
+</bean>
+    <bean id="business" class="ve.com.digitel.getuserinformationservice.business.GetUserInformationBusiness"
+							init-method="init"
+							p:businessRules-ref="validateLogin"/>
+
+</beans>

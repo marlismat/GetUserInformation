@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- bean de datos de ccws -->
+	<bean id="ProductCatalogCacheBean" class="la.integra.digitel.asw.cacheBean.ProductCatalogCacheManager" init-method="load" scope="singleton" lazy-init="true">
+        <property name="expiration">
+            <null />
+        </property>
+        <property name="description" value="Valores del cache del catalogo de productos" />
+    </bean>
+    <bean id="CcwsCacheBean" class="la.integra.digitel.asw.cacheBean.CcwsCacheManager" init-method="load" scope="singleton" lazy-init="true">
+        <property name="expiration">
+            <null />
+        </property>
+        <property name="description" value="Valores del cache de ccws" />
+    </bean>   
+<bean id="UserMessageCacheBean" class="la.integra.digitel.asw.cacheBean.UserMessageCacheManager" init-method="load" scope="singleton" lazy-init="true">
+        <property name="expiration">
+            <null />
+        </property>
+        <property name="description" value="Notificaciones genericas" />
+    </bean>    
+</beans>
+
